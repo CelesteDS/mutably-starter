@@ -2,13 +2,15 @@ console.log('Sanity Check: JS is working!')
 
 $(document).ready(() => {
   $('.get-books').on('click', allBooks)
-  $('.add-book').on('click', addBook)
+  $('#add-book').on('click', addBook)
 })
 
 
 /**
- * [allBooks description]
- * @return {[type]} [description]
+ * Gets all books from mutably, updates the DOM
+ * with this (adds each book as
+ * a node to the ul with class list-group.)
+ * @return {Promise} - resolves to undefined
  */
 function allBooks() {
   fetch('http://mutably.herokuapp.com/books', { method: 'get' })
@@ -31,8 +33,8 @@ function allBooks() {
 }
 
 /**
- * [getBook description]
- * @return {[type]} [description]
+ * Gets the details of a book from mutably & updates DOM with this info.
+ * @return {Promise} - Resolves to undefined
  */
 function getBook() {
   fetch(`http://mutably.herokuapp.com/books/${this.id}`, { method: 'delete' })
@@ -54,23 +56,30 @@ function getBook() {
 //   then use a ui library to make it look nice
 //   then deploy on Heroku!!
 //
-function addBook() {
+function addBook(event) {
+  console.log('adding book')
+  const title = $('#add-title')[0].value
+  const author = $('#add-author')[0].value
+  const image = $('#add-image')[0].value
+  const releaseDate = $('#add-releaseDate')[0].value
+
+  console.log($('#add-title')[0].value)
   fetch('http://mutably.herokuapp.com/books', { method: 'post',
-    headers: new Headers({ 'Content-Type': 'application/json'}),
-    body: JSON.stringify({ title: 'Tiny Beautiful Things', author: 'Cheryl Strayed' }) })
-    .then(response => response.json())
-    .then(allBooks())
+    headers: new Headers({ 'Content-Type': 'application/json' }),
+    body: JSON.stringify({ title, author, image, releaseDate }) })
+    .then(() => {
+      window.setTimeout(allBooks, 300)
+    })
   // $('.list-group').empty()
   // $('.list-group').append($(`<`))
 }
 
 /**
- * [deleteBook description]
- * @return {[type]} [description]
+ * Deletes a selected book from mutably and calls allBooks to update the DOM.
+ * @return {Promise} - Resolves to undefined
  */
 function deleteBook() {
   const id = this.id.slice(1);
-  console.log('in delete')
   fetch(`http://mutably.herokuapp.com/books/${id}`, { method: 'delete' })
     .then(() =>
       allBooks()
