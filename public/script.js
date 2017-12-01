@@ -1,21 +1,33 @@
-console.log("Sanity Check: JS is working!");
+console.log('Sanity Check: JS is working!')
 
-$(document).ready(function(){
-  $('.get-books').on('click', function() {
-    console.log('in click ');
-    fetch('http://mutably.herokuapp.com/books', { method: 'get' })
-    .then(function(response) {
-      return response.json();
-    }).then(function(res) {
-      const bookNodes = [];
-      Object.keys(res.books).forEach((el, ind) => {
-        bookNodes.push($(`<li>Title:${res.books[ind].title}, Author:${res.books[ind].author}</li>`));
-      });
-      bookNodes.forEach((node) => {
-        $('.list-group').append(node);
-      });
+$(document).ready(() => {
+  $('.get-books').on('click', allBooks)
+  $('.delete-book').on('click', deleteBook)
+})
+
+function deleteBook() {
+  const id = 4
+  console.log('in delete')
+  fetch(`http://mutably.herokuapp.com/books/:${String(id)}`, { method: 'delete' })
+    .then(() => {
+      console.log('in then after delete')
+      allBooks()
     })
-  });
-  // code in here
+    .catch(console.error)
+}
 
-});
+function allBooks() {
+  fetch('http://mutably.herokuapp.com/books', { method: 'get' })
+    .then(response =>
+      response.json()
+    ).then((res) => {
+      const bookNodes = []
+      res.books.forEach((book) => {
+        bookNodes.push($(`<li>${book.title} by ${book.author}</li>`))
+      })
+      $('.list-group').empty()
+      bookNodes.forEach((node) => {
+        $('.list-group').append(node)
+      })
+    })
+}

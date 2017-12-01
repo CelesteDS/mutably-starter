@@ -1,21 +1,27 @@
 {
   "name": "mutably-starter",
   "version": "1.0.0",
-  "description": "",
+  "description": "CRUD mutably project 383",
   "main": "server.js",
   "scripts": {
     "start": "nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Celeste De Santiago",
+  "license": "MIT",
   "dependencies": {
     "body-parser": "^1.17.1",
     "ejs": "^2.5.6",
     "express": "^4.15.2"
   },
   "devDependencies": {
-    "nodemon": "^1.11.0"
+    "nodemon": "^1.11.0",
+    "ajv": "^5.2.2",
+    "eslint": "^4.6.1",
+    "eslint-config-airbnb": "^15.1.0",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-jsx-a11y": "^5.1.1",
+    "eslint-plugin-react": "^7.3.0"
   }
 }
